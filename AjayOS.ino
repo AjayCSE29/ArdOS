@@ -1,4 +1,5 @@
 #include "shell.h"
+#include "filesystem.h"
 
 void setup()
 {
@@ -7,6 +8,7 @@ void setup()
     while (!Serial);
 
     bootScreen();
+    fs_init();
 }
 
 void loop()

@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include "commands.h"
+#include "filesystem.h"
 
 void cmd_help()
 {
@@ -27,4 +28,38 @@ void cmd_clear()
     {
         Serial.println();
     }
+}
+
+void cmd_ls()
+{
+    fs_list();
+}
+
+void cmd_mkdir(char name[])
+{
+    if(fs_createDirectory(name))
+        Serial.println("Directory created.");
+    else
+        Serial.println("Cannot create directory.");
+}
+
+void cmd_touch(char name[])
+{
+    if(fs_createFile(name))
+        Serial.println("File created.");
+    else
+        Serial.println("Cannot create file.");
+}
+
+void cmd_cd(char name[])
+{
+    if(fs_changeDirectory(name))
+        return;
+
+    Serial.println("Directory not found.");
+}
+
+void cmd_pwd()
+{
+    fs_printWorkingDirectory();
 }

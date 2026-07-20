@@ -74,23 +74,64 @@ void shell()
 
 void processCommand(char command[])
 {
-    if(strcmp(command, "help") == 0)
-    {
-        cmd_help();
-    }
-    else if(strcmp(command, "info") == 0)
-    {
-        cmd_info();
-    }
-    else if(strcmp(command, "clear") == 0)
-    {
-        cmd_clear();
-    }
-    else if(strlen(command) > 0)
-    {
-        Serial.print("Unknown command: ");
-        Serial.println(command);
-    }
+    char* token = strtok(command, " ");
 
-    Serial.println();
+if(token == NULL)
+    return;
+
+if(strcmp(token, "help") == 0)
+{
+    cmd_help();
+}
+else if(strcmp(token, "info") == 0)
+{
+    cmd_info();
+}
+else if(strcmp(token, "clear") == 0)
+{
+    cmd_clear();
+}
+else if(strcmp(token, "ls") == 0)
+{
+    cmd_ls();
+}
+else if(strcmp(token, "mkdir") == 0)
+{
+    char* name = strtok(NULL, " ");
+
+    if(name)
+        cmd_mkdir(name);
+    else
+        Serial.println("Usage: mkdir <dirname>");
+}
+else if(strcmp(token, "touch") == 0)
+{
+    char* name = strtok(NULL, " ");
+
+    if(name)
+        cmd_touch(name);
+    else
+        Serial.println("Usage: touch <filename>");
+}
+
+else if(strcmp(token, "cd") == 0)
+{
+    char* name = strtok(NULL, " ");
+
+    if(name)
+        cmd_cd(name);
+    else
+        Serial.println("Usage: cd <directory>");
+}
+else if(strcmp(token, "pwd") == 0)
+{
+    cmd_pwd();
+}
+
+else
+{
+    Serial.println("Unknown command.");
+}
+
+Serial.println();
 }
