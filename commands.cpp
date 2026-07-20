@@ -10,6 +10,11 @@ void cmd_help()
     Serial.println("help");
     Serial.println("info");
     Serial.println("clear");
+    Serial.println("mkdir");
+    Serial.println("touch");
+    Serial.println("ls");
+    Serial.println("cd");
+    Serial.println("pwd");
 }
 
 void cmd_info()
@@ -62,4 +67,28 @@ void cmd_cd(char name[])
 void cmd_pwd()
 {
     fs_printWorkingDirectory();
+}
+
+void cmd_write(char filename[])
+{
+    char buffer[MAX_FILE_SIZE];
+
+    Serial.println("Enter text:");
+
+    while(!Serial.available());
+
+    Serial.readBytesUntil('\n', buffer, MAX_FILE_SIZE - 1);
+
+    buffer[strcspn(buffer, "\r\n")] = '\0';
+
+    if(fs_writeFile(filename, buffer))
+        Serial.println("Saved.");
+    else
+        Serial.println("File not found.");
+}
+
+void cmd_cat(char filename[])
+{
+    if(!fs_readFile(filename))
+        Serial.println("File not found.");
 }

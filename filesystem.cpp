@@ -6,12 +6,16 @@
 const int MAX_ENTRIES = 10;
 const int MAX_NAME_LENGTH = 20;
 
+char fileData[512];
+uint16_t nextFreeByte = 0;
+
 struct FileEntry
 {
-    char name[20];
+    char name[16];
     bool isDirectory;
-
     int parent;
+
+    char content[32];
 };
 
 FileEntry entries[MAX_ENTRIES];
@@ -45,6 +49,7 @@ bool fs_createFile(const char name[])
     strcpy(entries[entryCount].name, name);
     entries[entryCount].isDirectory = false;
     entries[entryCount].parent = currentDirectory;
+    entries[entryCount].content[0] = '\0';
 
     entryCount++;
 
@@ -119,4 +124,40 @@ void fs_printWorkingDirectory()
 
     Serial.print("/");
     Serial.println(entries[currentDirectory].name);
+}
+
+bool fs_writeFile(const char filename[], const char text[])
+{
+    for(int i = 0; i < entryCount; i++)
+    {
+        if(entries[i].parent == currentDirectory &&
+           !entries[i].isDirectory &&
+           strcmp(entries[i].name, filename) == 0)
+        {
+            strncpy(entries[i].content, text, MAX_FILE_SIZE - 1);
+
+            entries[i].content[MAX_FILE_SIZE - 1] = '\0';
+
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool fs_readFile(const char filename[])
+{
+    for(int i = 0; i < entryCount; i++)
+    {
+        if(entries[i].parent == currentDirectory &&
+           !entries[i].isDirectory &&
+           strcmp(entries[i].name, filename) == 0)
+        {
+            Serial.println(entries[i].content);
+
+            return true;
+        }
+    }
+
+    return false;
 }
