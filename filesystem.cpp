@@ -12,10 +12,13 @@ uint16_t nextFreeByte = 0;
 struct FileEntry
 {
     char name[16];
+
     bool isDirectory;
+
     int parent;
 
-    char content[32];
+    uint16_t eepromAddress;
+    uint16_t size;
 };
 
 FileEntry entries[MAX_ENTRIES];
@@ -153,8 +156,19 @@ bool fs_readFile(const char filename[])
            !entries[i].isDirectory &&
            strcmp(entries[i].name, filename) == 0)
         {
-            Serial.println(entries[i].content);
+            for(int j = 0; entries[i].content[j] != '\0'; j++)
+            {
+                if(entries[i].content[j] == '\n')
+                {
+                    Serial.println();
+                }
+                else
+                {
+                    Serial.print(entries[i].content[j]);
+                }
+            }
 
+            Serial.println();
             return true;
         }
     }

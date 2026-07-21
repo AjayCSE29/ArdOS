@@ -1,6 +1,16 @@
 #include "shell.h"
 #include <Arduino.h>
 #include "commands.h"
+#include "filesystem.h"
+#define WRITE_BUFFER_SIZE 128
+
+char writeBuffer[WRITE_BUFFER_SIZE];
+int writeLength = 0;
+int lineNumber = 1;
+
+ShellState shellState = NORMAL_MODE;
+
+char currentWriteFile[20];
 
 const int MAX_COMMAND_LENGTH = 64;
 
@@ -41,11 +51,52 @@ void shell()
 
             inputBuffer[inputLength] = '\0';
 
-            processCommand(inputBuffer);
+            if(shellState == NORMAL_MODE)
+{
+    processCommand(inputBuffer);
+}
+else if(shellState == WRITE_MODE)
+{
+    // Save command
+    if(strcmp(inputBuffer, ":wq") == 0)
+    {
+        if(fs_writeFile(currentWriteFile, writeBuffer))
+            Serial.println("\nSaved.");
+        else
+            Serial.println("\nFile not found.");
+
+        shellState = NORMAL_MODE;
+
+        Serial.print("AjayOS > ");
+    }
+    else
+    {
+        int len = strlen(inputBuffer);
+
+        // Check if there's enough space
+        if(writeLength + len + 2 < WRITE_BUFFER_SIZE)
+        {
+            strcpy(&writeBuffer[writeLength], inputBuffer);
+
+            writeLength += len;
+
+            writeBuffer[writeLength++] = '\n';
+
+            writeBuffer[writeLength] = '\0';
+        }
+        else
+        {
+            Serial.println("\nWrite buffer full.");
+        }
+
+        lineNumber++;
+
+        Serial.print(lineNumber);
+        Serial.print("> ");
+    }
+}
 
             inputLength = 0;
-
-            Serial.print("AjayOS > ");
         }
 
         // BACKSPACE
@@ -65,7 +116,6 @@ void shell()
             if (inputLength < MAX_COMMAND_LENGTH - 1)
             {
                 inputBuffer[inputLength++] = c;
-
                 Serial.print(c);
             }
         }
@@ -128,10 +178,51 @@ else if(strcmp(token, "pwd") == 0)
     cmd_pwd();
 }
 
+else if(strcmp(token, "cat") == 0)
+{
+    char* name = strtok(NULL, " ");
+
+    if(name)
+        cmd_cat(name);
+    else
+        Serial.println("Usage: cat <filename>");
+}
+
+else if(strcmp(token, "write") == 0)
+{
+    char* name = strtok(NULL, " ");
+
+    if(name)
+        cmd_write(name);
+    else
+        Serial.println("Usage: write <filename>");
+}
+
 else
 {
     Serial.println("Unknown command.");
 }
 
 Serial.println();
+Serial.print("AjayOS > ");
+}
+
+void enterWriteMode(const char filename[])
+{
+    strcpy(currentWriteFile, filename);
+
+    shellState = WRITE_MODE;
+
+    writeLength = 0;
+    writeBuffer[0] = '\0';
+    lineNumber = 1;
+
+    Serial.println();
+    Serial.print("Writing to ");
+    Serial.println(filename);
+    Serial.println("Type ':wq' to save.");
+    Serial.println();
+
+    Serial.print(lineNumber);
+    Serial.print("> ");
 }

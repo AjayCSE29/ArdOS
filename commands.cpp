@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "commands.h"
 #include "filesystem.h"
+#include "shell.h"
 
 void cmd_help()
 {
@@ -71,20 +72,7 @@ void cmd_pwd()
 
 void cmd_write(char filename[])
 {
-    char buffer[MAX_FILE_SIZE];
-
-    Serial.println("Enter text:");
-
-    while(!Serial.available());
-
-    Serial.readBytesUntil('\n', buffer, MAX_FILE_SIZE - 1);
-
-    buffer[strcspn(buffer, "\r\n")] = '\0';
-
-    if(fs_writeFile(filename, buffer))
-        Serial.println("Saved.");
-    else
-        Serial.println("File not found.");
+    enterWriteMode(filename);
 }
 
 void cmd_cat(char filename[])
