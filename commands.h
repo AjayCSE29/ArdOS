@@ -11,5 +11,6 @@ void cmd_cd(char name[]);
 void cmd_pwd();
 void cmd_write(char filename[]);
 void cmd_cat(char filename[]);
+void cmd_format();
 
 #endif

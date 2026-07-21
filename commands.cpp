@@ -16,6 +16,7 @@ void cmd_help()
     Serial.println("ls");
     Serial.println("cd");
     Serial.println("pwd");
+    Serial.println("format");
 }
 
 void cmd_info()
@@ -80,3 +81,9 @@ void cmd_cat(char filename[])
     if(!fs_readFile(filename))
         Serial.println("File not found.");
 }
+
+void cmd_format()
+{
+    fs_format();
+}
+

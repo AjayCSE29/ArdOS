@@ -13,5 +13,6 @@ bool fs_changeDirectory(const char name[]);
 void fs_printWorkingDirectory();
 bool fs_writeFile(const char filename[], const char text[]);
 bool fs_readFile(const char filename[]);
+void fs_format();
 
 #endif

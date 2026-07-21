@@ -198,6 +198,11 @@ else if(strcmp(token, "write") == 0)
         Serial.println("Usage: write <filename>");
 }
 
+else if(strcmp(token, "format") == 0)
+{
+    cmd_format();
+}
+
 else
 {
     Serial.println("Unknown command.");
