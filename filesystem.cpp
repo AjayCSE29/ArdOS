@@ -7,12 +7,8 @@
 #define DIRECTORY_ADDR  16
 #define DATA_ADDR       256
 
-const int MAX_ENTRIES = 10;
+const int MAX_ENTRIES = 1;
 const int MAX_NAME_LENGTH = 20;
-
-
-char fileData[512];
-uint16_t nextFreeByte = 0;
 
 void eepromWriteBlock(int address, const void* data, int size);
 void eepromReadBlock(int address, void* data, int size);
@@ -193,8 +189,6 @@ bool fs_createFile(const char name[])
         &diskHeader,
         sizeof(DiskHeader)
     );
-
-    diskHeader.fileCount++;
 
 Serial.print("Saving file count: ");
 Serial.println(diskHeader.fileCount);

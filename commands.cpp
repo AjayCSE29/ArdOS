@@ -28,15 +28,16 @@ void cmd_info()
 {
     Serial.println();
     Serial.println("========================================");
-    Serial.println("            AJAY OS v0.1");
+    Serial.println("            AJAY OS v2.0.0");
     Serial.println("========================================");
     Serial.println();
 
-    Serial.println("Processor : ATmega328P");
-    Serial.println("Clock     : 16 MHz");
-    Serial.println("Flash     : 32 KB");
-    Serial.println("SRAM      : 2 KB");
-    Serial.println("EEPROM    : 1 KB");
+    Serial.println("-------Parallel processing enabled-------");
+    Serial.println("Processor       : ATmega328P @ 16 MHz");
+    Serial.println("Total Clock     : 32 MHz");
+    Serial.println("Total Flash     : 64 KB");
+    Serial.println("Total SRAM      : 4 KB");
+    Serial.println("Total EEPROM    : 2 KB");
 }
 
 void cmd_clear()

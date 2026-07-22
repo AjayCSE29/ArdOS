@@ -12,7 +12,7 @@ ShellState shellState = NORMAL_MODE;
 
 char currentWriteFile[20];
 
-const int MAX_COMMAND_LENGTH = 64;
+const int MAX_COMMAND_LENGTH = 48;
 
 char inputBuffer[MAX_COMMAND_LENGTH];
 int inputLength = 0;
@@ -21,15 +21,16 @@ void bootScreen()
 {
     Serial.println();
     Serial.println("========================================");
-    Serial.println("            AJAY OS v0.1");
+    Serial.println("            AJAY OS v2.0.0");
     Serial.println("========================================");
     Serial.println();
 
-    Serial.println("Processor : ATmega328P");
-    Serial.println("Clock     : 16 MHz");
-    Serial.println("Flash     : 32 KB");
-    Serial.println("SRAM      : 2 KB");
-    Serial.println("EEPROM    : 1 KB");
+    Serial.println("-------Parallel processing enabled-------");
+    Serial.println("Processor       : ATmega328P @ 16 MHz");
+    Serial.println("Total Clock     : 32 MHz");
+    Serial.println("Total Flash     : 64 KB");
+    Serial.println("Total SRAM      : 4 KB");
+    Serial.println("Total EEPROM    : 2 KB");
 
     Serial.println();
     Serial.println("Type 'help' to begin.");
@@ -37,6 +38,26 @@ void bootScreen()
 
     Serial.print("AjayOS > ");
 }
+/*
+void shell()
+{
+    while (Serial.available())
+    {
+        int c = Serial.read();
+
+        if (c == '\r' || c == '\n')
+        {
+            Serial.println();
+            Serial.print("ENTER");
+            Serial.println();
+        }
+        else
+        {
+            Serial.write((char)c);
+        }
+    }
+}
+*/
 
 void shell()
 {
@@ -221,6 +242,7 @@ else
 Serial.println();
 Serial.print("AjayOS > ");
 }
+
 
 void enterWriteMode(const char filename[])
 {
