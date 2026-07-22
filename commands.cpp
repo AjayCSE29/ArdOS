@@ -8,22 +8,32 @@ void cmd_help()
     Serial.println();
     Serial.println("Available Commands");
     Serial.println("------------------");
-    Serial.println("help");
-    Serial.println("info");
-    Serial.println("clear");
-    Serial.println("mkdir");
-    Serial.println("touch");
-    Serial.println("ls");
-    Serial.println("cd");
-    Serial.println("pwd");
-    Serial.println("format");
+    Serial.println("help        -> View commands");
+    Serial.println("info        -> System info");
+    Serial.println("clear       -> Clear screen");
+    Serial.println("mkdir       -> Create folder");
+    Serial.println("touch       -> Create file");
+    Serial.println("ls          -> list files and folders");
+    Serial.println("cd          -> Change directory");
+    Serial.println("pwd         -> Print working directory");
+    Serial.println("format      -> Format EEPROM");
+    Serial.println("rm          -> Remove file");
+    Serial.println("cat         -> Read file");
+    Serial.println("write       -> Write file");
+    //Serial.println("rm          -> Remove file");
+
 }
 
 void cmd_info()
 {
     Serial.println();
-    Serial.println("AJAY OS v0.1");
+    Serial.println("========================================");
+    Serial.println("            AJAY OS v0.1");
+    Serial.println("========================================");
+    Serial.println();
+
     Serial.println("Processor : ATmega328P");
+    Serial.println("Clock     : 16 MHz");
     Serial.println("Flash     : 32 KB");
     Serial.println("SRAM      : 2 KB");
     Serial.println("EEPROM    : 1 KB");
@@ -85,5 +95,13 @@ void cmd_cat(char filename[])
 void cmd_format()
 {
     fs_format();
+}
+
+void cmd_rm(char name[])
+{
+    if(fs_deleteFile(name))
+        Serial.println("File deleted.");
+    else
+        Serial.println("File not found.");
 }
 

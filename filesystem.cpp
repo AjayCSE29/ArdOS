@@ -122,12 +122,7 @@ void fs_init()
     else
     {
         Serial.println("Filesystem OK.");
-    }
-    
-    Serial.println("Filesystem OK.");
-
-Serial.println("<<< INSIDE FS_INIT >>>");
-Serial.println(diskHeader.fileCount);
+    }   
 
     // Load directory entries from EEPROM
     entryCount = diskHeader.fileCount;
@@ -341,4 +336,52 @@ bool fs_readFile(const char* filename)
     }
 
     return false;
+}
+
+bool fs_deleteFile(const char name[])
+{
+    int index = -1;
+
+    // Find the file
+    for(int i = 0; i < entryCount; i++)
+    {
+        if(!entries[i].isDirectory &&
+           entries[i].parent == currentDirectory &&
+           strcmp(entries[i].name, name) == 0)
+        {
+            index = i;
+            break;
+        }
+    }
+
+    if(index == -1)
+        return false;
+
+    // Shift remaining entries
+    for(int i = index; i < entryCount - 1; i++)
+    {
+        entries[i] = entries[i + 1];
+
+        saveDirectoryEntry(i);
+    }
+
+    entryCount--;
+    diskHeader.fileCount = entryCount;
+
+    // Clear the last directory entry in EEPROM
+    FileEntry empty = {};
+    eepromWriteBlock(
+        getDirectoryAddress(entryCount),
+        &empty,
+        sizeof(FileEntry)
+    );
+
+    // Save updated header
+    eepromWriteBlock(
+        HEADER_ADDR,
+        &diskHeader,
+        sizeof(DiskHeader)
+    );
+
+    return true;
 }

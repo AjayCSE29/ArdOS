@@ -203,6 +203,16 @@ else if(strcmp(token, "format") == 0)
     cmd_format();
 }
 
+else if(strcmp(token, "rm") == 0)
+{
+    char* name = strtok(NULL, " ");
+
+    if(name)
+        cmd_rm(name);
+    else
+        Serial.println("Usage: rm <filename>");
+}
+
 else
 {
     Serial.println("Unknown command.");
