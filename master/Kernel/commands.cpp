@@ -12,16 +12,16 @@ void bootScreen()
 {
     Serial.println();
     Serial.println(F("========================================"));
-    Serial.println(F("            AJAY OS v2.0.0"));
+    Serial.println(F("            AJAY OS v3.0.0"));
     Serial.println(F("========================================"));
     Serial.println(F(" "));
 
     Serial.println(F("-------Parallel processing enabled-------"));
     Serial.println(F("Processor       : ATmega328P @ 16 MHz"));
-    Serial.println(F("Total Clock     : 32 MHz"));
-    Serial.println(F("Total Flash     : 64 KB"));
-    Serial.println(F("Total SRAM      : 4 KB"));
-    Serial.println(F("Total EEPROM    : 2 KB"));
+    Serial.println(F("Total Clock     : 48 MHz"));
+    Serial.println(F("Total Flash     : 96 KB"));
+    Serial.println(F("Total SRAM      : 6 KB"));
+    Serial.println(F("Total EEPROM    : 3 KB"));
 
     Serial.println(F(" "));
     Serial.println(F("Type 'help' to begin."));

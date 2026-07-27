@@ -173,7 +173,10 @@ void receiveEvent(int bytes)
         
         case IPC_PING:
 {
-    pingReply = true;
+    responseBuffer[0] = STATUS_OK;
+    responseBuffer[1] = 1;               // One byte of data
+    responseBuffer[2] = DEVICE_WORKER;   // Worker identifier
+    responseLength = 3;
     break;
 }
 
@@ -187,13 +190,5 @@ void receiveEvent(int bytes)
 
 void requestEvent()
 {
-    case IPC_PING:
-{
-    responseBuffer[0] = STATUS_OK;
-    responseBuffer[1] = 1;
-    responseBuffer[2] = DEVICE_WORKER;
-    responseLength = 3;
-    break;
-}
     Wire.write(responseBuffer, responseLength);
 }
